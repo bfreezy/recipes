@@ -23,7 +23,7 @@ from urlparse import urlparse
 
 from autopkglib import Processor, ProcessorError, get_pref
 
-__all__ = ["MakeCatalogsProcessor"]
+__all__ = ["MakeCatalogsProcessorAPI"]
 
 class MakeCatalogsProcessor(Processor):
     """Runs makecatalogs on a munki repo"""
@@ -127,6 +127,6 @@ class MakeCatalogsProcessor(Processor):
 
 
 if __name__ == "__main__":
-    PROCESSOR = MakeCatalogsProcessor()
+    PROCESSOR = MakeCatalogsProcessorAPI()
     PROCESSOR.execute_shell()
 
