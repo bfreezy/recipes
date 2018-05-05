@@ -6,7 +6,7 @@
     <string>Rebuilds Munki catalogs in munki_repo_path if any other recipe in the same autopkg run imported something.
 Use -k force_rebuild=YES to force a rebuild.</string>
     <key>Identifier</key>
-    <string>com.github.autopkg.munki.makecatalogs</string>
+    <string>com.github.bfreezy.munki.makecatalogsapi</string>
     <key>Input</key>
     <dict>
     </dict>
@@ -16,7 +16,7 @@ Use -k force_rebuild=YES to force a rebuild.</string>
     <array>
         <dict>
             <key>Processor</key>
-            <string>MakeCatalogsProcessor</string>
+            <string>MakeCatalogsProcessorAPI</string>
             <key>Arguments</key>
             <dict>
                 <key>munki_repo_path</key>

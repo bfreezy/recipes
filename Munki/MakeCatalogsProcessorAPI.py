@@ -15,19 +15,30 @@
 # limitations under the License.
 """autopkg processor to run makecatalogs on a Munki repo"""
 
+import optparse
 import os.path
 import plistlib
 import subprocess
+from urlparse import urlparse
 
-from autopkglib import Processor, ProcessorError, get_pref
+#from autopkglib import Processor, ProcessorError, get_pref
 
 __all__ = ["MakeCatalogsProcessor"]
 
 class MakeCatalogsProcessor(Processor):
     """Runs makecatalogs on a munki repo"""
     input_variables = {
+        "MUNKI_REPO": {
+            "description": "Munki repo URL.",
+            "required": True
+        },
+        "MUNKI_REPO_PLUGIN": {
+            "description": "Munki repo plugin. Defaults to FileRepo.",
+            "required": False,
+            "default": "FileRepo"
+        },
         "munki_repo_path": {
-            "required": True,
+            "required": False,
             "description": "Path to the munki repo.",
         },
         "force_rebuild": {
@@ -49,6 +60,18 @@ class MakeCatalogsProcessor(Processor):
 
     def main(self):
         '''Rebuild Munki catalogs in repo_path'''
+        try:
+            from munkilib import munkirepo
+            from munkilib.admin import makecatalogslib
+            from munkilib.admin import pkginfolib
+            from munkilib.cliutils import get_version, pref, path2url
+        except ImportError, err:
+            raise ProcessorError(
+                "munkilib import error: %s\nMunki tools version 3.2.0.3462 or "
+                "later is required." % str(err))
+
+        if urlparse(self.env["MUNKI_REPO"]).scheme == '':
+            self.env["MUNKI_REPO"] = path2url(self.env["MUNKI_REPO"])
 
         cache_dir = get_pref("CACHE_DIR") or os.path.expanduser(
             "~/Library/AutoPkg/Cache")
@@ -79,8 +102,11 @@ class MakeCatalogsProcessor(Processor):
             self.env["makecatalogs_stderr"] = ""
         else:
             # Generate arguments for makecatalogs.
-            args = ["/usr/local/munki/makecatalogs",
-                    self.env["munki_repo_path"]]
+            repo = munkirepo.connect(
+                self.env['MUNKI_REPO'], self.env['MUNKI_REPO_PLUGIN'])
+
+            args = ["/usr/local/munki/makecatalogs", "--plugin=MWA2APIRepo", "--repo_url=http://localhost/api"]
+            #args = makecatalogslib.makecatalogs(repo, )
 
             # Call makecatalogs.
             try:
