@@ -25,7 +25,7 @@ from autopkglib import Processor, ProcessorError, get_pref
 
 __all__ = ["MakeCatalogsProcessorAPI"]
 
-class MakeCatalogsProcessor(Processor):
+class MakeCatalogsProcessorAPI(Processor):
     """Runs makecatalogs on a munki repo"""
     input_variables = {
         "MUNKI_REPO": {
