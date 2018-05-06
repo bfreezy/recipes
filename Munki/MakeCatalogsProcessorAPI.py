@@ -34,8 +34,8 @@ class MakeCatalogsProcessorAPI(Processor):
         },
         "MUNKI_REPO_PLUGIN": {
             "description": "Munki repo plugin. Defaults to FileRepo.",
-            "required": False,
-            "default": "FileRepo"
+            "required": False
+            #"default": "FileRepo"
         },
         "munki_repo_path": {
             "required": False,
@@ -105,7 +105,7 @@ class MakeCatalogsProcessorAPI(Processor):
             repo = munkirepo.connect(
                 self.env['MUNKI_REPO'], self.env['MUNKI_REPO_PLUGIN'])
 
-            args = ["/usr/local/munki/makecatalogs", "--plugin=MWA2APIRepo", "--repo_url=http://localhost/api"]
+            args = ["/usr/local/munki/makecatalogs", "--plugin={}.format(self.env['MUNKI_REPO_PLUGIN'])", "--repo_url={}.format(self.env['MUNKI_REPO'])"]
             #args = makecatalogslib.makecatalogs(repo, )
 
             # Call makecatalogs.
