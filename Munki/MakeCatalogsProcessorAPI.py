@@ -104,6 +104,8 @@ class MakeCatalogsProcessorAPI(Processor):
             # Generate arguments for makecatalogs.
             repo = munkirepo.connect(
                 self.env['MUNKI_REPO'], self.env['MUNKI_REPO_PLUGIN'])
+            print(self.env['MUNKI_REPO'])
+            print(self.env['MUNKI_REPO_PLUGIN'])
 
             args = ["/usr/local/munki/makecatalogs", "--plugin=MWA2APIRepo", "--repo_url=http://localhost/api"]
             #args = makecatalogslib.makecatalogs(repo, )
